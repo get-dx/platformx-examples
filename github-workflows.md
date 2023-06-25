@@ -3,7 +3,7 @@
 Example workflow that tracks pushes:
 
 ```yml
-name: Track push
+name: DX
 on:
   push:
     branches:
@@ -24,7 +24,7 @@ jobs:
 Example workflow that tracks reviews:
 
 ```yml
-name: Track PR approvals
+name: DX
 on:
   pull_request_review:
     types: [submitted]
@@ -35,7 +35,7 @@ jobs:
       GETDX_SECRET_KEY: ${{ secrets.GETDX_SECRET_KEY }}
       REVIEW_STATE: ${{ github.event.review.state }}
     steps:
-      - name: Track PR approvals
+      - name: Track PR reviews
         run: |
           printf -v data '{"name": "pull_request_review.submitted", "github_username": "%s", "timestamp": "%s", "metadata": {"repo": "%s", "review_state": "%s"}}' "$GITHUB_ACTOR" "$EPOCHSECONDS" "$GITHUB_REPOSITORY" "$REVIEW_STATE"
           curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $GETDX_SECRET_KEY" -d "$data" https://api.getdx.com/events.track
